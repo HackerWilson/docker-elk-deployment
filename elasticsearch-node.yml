@@ -1,0 +1,6 @@
+version: '2'
+services:
+  elasticsearch:
+    extends:
+      file: docker-compose.yml
+      service: elasticsearch

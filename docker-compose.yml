@@ -1,0 +1,19 @@
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch:${ELASTICSEARCH_VERSION}
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ${ELASTICSEARCH_DATA}:/usr/share/elasticsearch/data
+  logstash:
+    image: logstash:${LOGSTASH_VERSION}
+    command: logstash -f /etc/logstash/conf.d
+  kibana:
+    build:
+      context: ./kibana
+    image: kibana:elk
+    ports:
+      - "${KIBANA_PORT}:5601"
+    links:
+      - elasticsearch
+    command: ["/tmp/wait-for-it.sh", "${KIBANA_ELASTICSEARCH_ADDRESS}", "--timeout=0", "--strict","--","kibana -e http://${KIBANA_ELASTICSEARCH_ADDRESS}"]

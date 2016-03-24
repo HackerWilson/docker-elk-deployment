@@ -1,0 +1,10 @@
+version: '2'
+services:
+  logstash-shipper:
+    extends:
+      file: docker-compose.yml
+      service: logstash
+    volumes:
+      - ./logstash/shipper/config:/etc/logstash/conf.d
+    ports:
+      - "9500:9500"

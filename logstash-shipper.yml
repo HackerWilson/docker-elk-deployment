@@ -1,0 +1,15 @@
+version: '3'
+services:
+  logstash-shipper:
+    image: "${LOGSTASH_IMAGE}"
+    ports:
+    - $LOGSTASH_SHIPPER_PORT_MAP
+    networks:
+    - ${COMPOSE_PROJECT_NAME}_${ELK_NETWORKS}
+    command: ["-e", "$LOGSTASH_SHIPPER_CONFIG_STRING"]
+    deploy:
+      mode: global
+
+networks:
+  ${COMPOSE_PROJECT_NAME}_${ELK_NETWORKS}:
+    external: true
